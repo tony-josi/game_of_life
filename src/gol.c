@@ -5,6 +5,8 @@
     static int sleep_in_ms(long);
 #endif
 
+static void align_string(uint32_t, char *);
+
 int game_runner_main() {
 
     int ret_code = 1;
@@ -74,6 +76,7 @@ int fill_board_init_setup(uint32_t choice, uint8_t **Board) {
 
     if(choice == DEFAULT_INIT_SETUP) {
         /* default init for Exploder */
+        /*
         Board[6][8] = 1;
         Board[7][8] = 1;
         Board[8][8] = 1;
@@ -86,6 +89,53 @@ int fill_board_init_setup(uint32_t choice, uint8_t **Board) {
         Board[9][12] = 1;
         Board[10][12] = 1;
         Board[10][10] = 1;
+        */
+
+        /* default init for Small Exploder */
+        /*
+        Board[9][8] = 1;
+        Board[9][9] = 1;
+        Board[9][10] = 1;
+        Board[8][9] = 1;
+        Board[10][8] = 1;
+        Board[10][10] = 1;
+        Board[11][9] = 1;
+        */
+
+        /* default init for 10 Cell Row */
+        /*
+        Board[10][5] = 1;
+        Board[10][6] = 1;        
+        Board[10][7] = 1;
+        Board[10][8] = 1;        
+        Board[10][9] = 1;
+        Board[10][10] = 1;
+        Board[10][11] = 1;
+        Board[10][12] = 1;        
+        Board[10][13] = 1;
+        Board[10][14] = 1;
+        */
+
+        /* default init for Lightweight Spaceship */
+        /*
+        Board[8][8] = 1;
+        Board[8][9] = 1;        
+        Board[8][10] = 1;
+        Board[8][11] = 1;        
+        Board[9][7] = 1;
+        Board[9][11] = 1;
+        Board[10][11] = 1;
+        Board[11][7] = 1;        
+        Board[11][10] = 1;
+        */
+
+       /* default init for random live cells */
+        srand(time(0)); 
+        for (uint32_t i = 0; i < MAX_BOARD_DEFAULT_SIZE; i++) 
+            for (uint32_t j = 0; j < MAX_BOARD_DEFAULT_SIZE; j++) 
+                Board[i][j] = RAND_GEN(2);
+        
+
  
     }
 
@@ -206,15 +256,33 @@ int check_rule_death_by_overcrowding(uint32_t size, uint8_t **Board, uint8_t **R
 
 
 void print_cur_generation(uint32_t size, uint8_t **Board) {
+
+    char index[5];
+    char rw_index[5];
     
     //int row_col_size;
     if(size == DEFAULT_INIT_SETUP) {
+
+        printf("   |");
         for(int i = 0; i < MAX_BOARD_DEFAULT_SIZE; i++) {
-            printf("|-------------------------------------------------------------------------------|\n|");
+            sprintf(rw_index, "%d", i);
+            align_string(5, rw_index);
+            printf("%s|", rw_index);
+        }
+        printf("\n");
+        
+        for(int i = 0; i < MAX_BOARD_DEFAULT_SIZE; i++) {
+            
+            sprintf(index, "%d", i);
+            align_string(5, index);
+//            printf("%s|-------------------------------------------------------------------------------|\n   |", index);
+
+            printf("%s|", index);
+
 
             for(int j = 0; j < MAX_BOARD_DEFAULT_SIZE; j++) {
                 if(Board[i][j] == 1)
-                    printf(" # |");
+                    printf("\u2588\u2588\u2588|");
                 else
                     printf("   |");
             }
@@ -223,8 +291,8 @@ void print_cur_generation(uint32_t size, uint8_t **Board) {
 
         }
 
-        printf("|-------------------------------------------------------------------------------|\n\n\n");
-
+        //printf("   |-------------------------------------------------------------------------------|\n\n\n");
+        printf("\n\n\n");
     }
 }
 
@@ -285,6 +353,33 @@ void free_board(uint32_t size_arg, uint8_t ***Board) {
     free(*Board);
     *Board = NULL;
 
+}
+
+static void align_string(uint32_t size, char *str) {
+
+    uint32_t i = 0;
+    while(i < (size - 1)) {
+        i++;
+
+        if(*str == '\0') {
+            *str = ' ';
+            break;
+        }
+
+        str++;
+
+    }
+
+    while(i < (size - 1)) {
+        i++;
+
+        *str = ' ';
+
+        str++;
+
+    }
+
+    *str = '\0';
 }
 
 

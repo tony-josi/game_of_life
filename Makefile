@@ -1,7 +1,7 @@
 TARGET = game_of_life_sim
 STD_LIBS = -lm
 CC = gcc
-CFLAGS = -std=c99 -pedantic -Wall -Wextra -Wformat -ggdb3
+CFLAGS = -std=c99 -pedantic -Wall -Wextra -Wformat -ggdb3 -O3
 LFLAGS = -pedantic -Wall -Wextra 
 CFLAGS_STRICT = -std=c99 -Wall -pedantic -ggdb3 \
 -pedantic-errors -Wextra -Waggregate-return -Wcast-align \

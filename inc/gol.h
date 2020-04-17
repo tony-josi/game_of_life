@@ -1,5 +1,9 @@
+#ifndef GOL_H
+#define GOL_H
+
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 #ifdef _WIN32
     #include <Windows.h>
@@ -7,18 +11,27 @@
     #include <time.h>
 #endif
 
+#ifndef EXIT_SUCCESS
+#define EXIT_SUCCESS                    0
+#endif
+
+#ifndef EXIT_FAILURE
+#define EXIT_FAILURE                    (-1)
+#endif
+
 #define MAX_BOARD_DEFAULT_SIZE          (20)
 
 #define DEFAULT_INIT_SETUP              0
 
-#define DEFAULT_SLEEP_TIME              10
+#define DEFAULT_SLEEP_TIME              0
 
 #define MAX_NOOF_GENERATIONS            100
 
 #define UNUSED(X)                       (void)X      /* To avoid gcc/g++ warnings */
 
-typedef                                 int (*rule_fptr_t) (uint32_t, uint8_t **, uint8_t **);
+#define RAND_GEN(N)                     (int)((double)rand() / ((double)RAND_MAX + 1) * N)
 
+typedef                                 int (*rule_fptr_t) (uint32_t, uint8_t **, uint8_t **);
 
 typedef enum {
     NEW_BIRTH = 0,
@@ -66,4 +79,6 @@ void print_cur_generation(uint32_t, uint8_t **);
 void combine_boards(uint32_t, uint8_t, uint8_t **, uint8_t **);
 void free_board(uint32_t, uint8_t ***);
 void clear_board(uint32_t, uint8_t, uint8_t **);
+
+#endif /* GOL_H */
 
