@@ -34,6 +34,8 @@ int game_runner_main() {
         }
     }
 
+    free_board(DEFAULT_INIT_SETUP, &board);
+
     return ret_code;
 
 }
