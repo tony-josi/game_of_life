@@ -17,5 +17,5 @@ make
 ##### Run
 
 ``` sh
-game_of_life.exe
+game_of_life_sim.exe
 ```
