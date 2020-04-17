@@ -19,6 +19,13 @@
 
 typedef                                 int (*rule_fptr_t) (uint32_t, uint8_t **, uint8_t **);
 
+
+typedef enum {
+    NEW_BIRTH = 0,
+    DEATH_BY_ISOLATION,
+    DEATH_BY_OVERCROWDING
+} rule_t;
+
 static inline int nearby_life_counter(int i, int j, int size, uint8_t **Buffer) {
     
     int cntr = 0;
@@ -46,13 +53,6 @@ static inline int nearby_life_counter(int i, int j, int size, uint8_t **Buffer) 
 
     return cntr;
 }
-
-
-typedef enum {
-    NEW_BIRTH = 0,
-    DEATH_BY_ISOLATION,
-    DEATH_BY_OVERCROWDING
-} rule_t;
 
 int game_runner_main();
 int init_board(uint32_t, uint8_t ***);
