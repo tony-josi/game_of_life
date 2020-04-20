@@ -5,11 +5,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #ifdef _WIN32
     #include <Windows.h>
-#else
-    #include <time.h>
 #endif
 
 #ifndef EXIT_SUCCESS
@@ -27,6 +26,14 @@
 #define DEFAULT_SLEEP_TIME              0
 
 #define MAX_NOOF_GENERATIONS            100
+
+#define INIT_WITH_ONE                   (1u)
+
+#define INIT_WITH_ZERO                  (0u)
+
+#define DO_LOGICAL_OR_OP                (0u)
+
+#define DO_LOGICAL_AND_OP               (1u)
 
 #define UNUSED(X)                       (void)X      /* To avoid gcc/g++ warnings */
 

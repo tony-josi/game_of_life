@@ -147,7 +147,7 @@ int fill_board_init_setup(uint32_t choice, uint8_t **Board) {
        Board[10][10] = 1;
        Board[10][11] = 1;
        Board[11][10] = 1;
-       Board[11][10] = 1;
+       Board[11][11] = 1;
        // left diamond 
        Board[10][19] = 1;
        Board[10][20] = 1;
@@ -210,18 +210,18 @@ int next_generation(uint32_t size_arg, uint8_t **Board, tboard_t tboard) {
     else
         size = size_arg;
 
-    clear_board(DEFAULT_INIT_SETUP, 0, tboard.rule_1_temp_board);
-    clear_board(DEFAULT_INIT_SETUP, 1, tboard.rule_2_temp_board);
-    clear_board(DEFAULT_INIT_SETUP, 1, tboard.rule_3_temp_board);
+    clear_board(DEFAULT_INIT_SETUP, INIT_WITH_ZERO, tboard.rule_1_temp_board);
+    clear_board(DEFAULT_INIT_SETUP, INIT_WITH_ONE, tboard.rule_2_temp_board);
+    clear_board(DEFAULT_INIT_SETUP, INIT_WITH_ONE, tboard.rule_3_temp_board);
 
     ret_code |= apply_rule(NEW_BIRTH, size, Board, tboard.rule_1_temp_board);
     ret_code |= apply_rule(DEATH_BY_ISOLATION, size, Board, tboard.rule_2_temp_board);
     ret_code |= apply_rule(DEATH_BY_OVERCROWDING, size, Board, tboard.rule_3_temp_board);
 
     // combine ***
-    combine_boards(DEFAULT_INIT_SETUP, 0, Board, tboard.rule_1_temp_board);
-    combine_boards(DEFAULT_INIT_SETUP, 1, Board, tboard.rule_2_temp_board);
-    combine_boards(DEFAULT_INIT_SETUP, 1, Board, tboard.rule_3_temp_board);
+    combine_boards(DEFAULT_INIT_SETUP, DO_LOGICAL_OR_OP, Board, tboard.rule_1_temp_board);
+    combine_boards(DEFAULT_INIT_SETUP, DO_LOGICAL_AND_OP, Board, tboard.rule_2_temp_board);
+    combine_boards(DEFAULT_INIT_SETUP, DO_LOGICAL_AND_OP, Board, tboard.rule_3_temp_board);
 
     return ret_code;
 
