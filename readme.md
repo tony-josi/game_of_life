@@ -4,6 +4,10 @@ The Game of Life, also known simply as Life, is a cellular automaton devised by 
 
 The game is a zero-player game, meaning that its evolution is determined by its initial state, requiring no further input. One interacts with the Game of Life by creating an initial configuration and observing how it evolves. It is Turing complete and can simulate a universal constructor or any other Turing machine.
 
+## Sample
+
+![Output sample](https://github.com/TonyJosi97/game_of_life/blob/master/samples/GosperGliderGun_300_Generations.gif)
+
 ### Installation
 
 ##### Build
