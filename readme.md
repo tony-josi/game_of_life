@@ -6,6 +6,8 @@ The game is a zero-player game, meaning that its evolution is determined by its 
 
 ## Sample
 
+#### Gosper Glider Gun
+
 ![Output sample](https://github.com/TonyJosi97/game_of_life/blob/master/samples/GosperGliderGun_300_Generations.gif)
 
 ### Installation
