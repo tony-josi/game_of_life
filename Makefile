@@ -1,7 +1,7 @@
 TARGET = game_of_life_sim
 STD_LIBS = -lm
 CC = gcc
-CFLAGS = -std=c99 -pedantic -Wall -Wextra -Wformat -ggdb3 -O3
+CFLAGS = -std=c99 -pedantic -Wall -Wextra -Wformat -Ofast -march=native
 LFLAGS = -pedantic -Wall -Wextra 
 CFLAGS_STRICT = -std=c99 -Wall -pedantic -ggdb3 \
 -pedantic-errors -Wextra -Waggregate-return -Wcast-align \
@@ -49,7 +49,7 @@ HEADERS = $(BASE_H_FILES) $(SRC_H_FILES)
 #Link
 $(TARGET): $(OBJECTS)
 	@echo Linking files: $(OBJECTS) ...
-	$(CC) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) $(STD_LIBS) -o $@
 	@echo Deleting .o files ...
 	-rm -f $(OBJECTS)
 	@echo Done

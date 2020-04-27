@@ -5,9 +5,17 @@
     static int sleep_in_ms(long);
 #endif
 
+static long colors[] = {0xFF0000, 0x00FF00, 0x0000FF};
+
+static unsigned char buf[3L*PPM_SIZE*PPM_SIZE];
+
 static void align_string(uint32_t, char *);
 static int init_temp_board(tboard_t *);
 static void free_temp_board(tboard_t *);
+static void buf_clear(void);
+static void buf_set(int , int , long);
+static void buf_set_pixel(int , int , long);
+static void buf_write(void);
 
 int game_runner_main() {
 
@@ -25,7 +33,7 @@ int game_runner_main() {
 
         if(!(ret_code = fill_board_init_setup(DEFAULT_INIT_SETUP, board))) {
 
-            print_cur_generation(DEFAULT_INIT_SETUP, board);
+            write_ppm_cur_generation(DEFAULT_INIT_SETUP, board);
 
             while(!(ret_code = next_generation(DEFAULT_INIT_SETUP, board, temp_boards)) 
             && generation_cntr < MAX_NOOF_GENERATIONS) {
@@ -38,7 +46,7 @@ int game_runner_main() {
                     sleep_in_ms(DEFAULT_SLEEP_TIME);
                 #endif
 
-                print_cur_generation(DEFAULT_INIT_SETUP, board);
+                write_ppm_cur_generation(DEFAULT_INIT_SETUP, board);
                 ++generation_cntr;
             
             }
@@ -307,7 +315,6 @@ int check_rule_death_by_overcrowding(uint32_t size, uint8_t **Board, uint8_t **R
 }
 
 
-
 void print_cur_generation(uint32_t size, uint8_t **Board) {
 
     char index[5];
@@ -347,6 +354,28 @@ void print_cur_generation(uint32_t size, uint8_t **Board) {
         //printf("   |-------------------------------------------------------------------------------|\n\n\n");
         printf("\n\n\n");
     }
+}
+
+
+void write_ppm_cur_generation(uint32_t size, uint8_t **Board) {
+
+    buf_clear();
+    
+    if(size == DEFAULT_INIT_SETUP) {
+        
+        for(int i = 0; i < MAX_BOARD_DEFAULT_SIZE; i++) {
+            for(int j = 0; j < MAX_BOARD_DEFAULT_SIZE; j++) {
+                if(Board[i][j] == 1)
+                    buf_set_pixel(i * PIXEL_SIZE, j * PIXEL_SIZE, colors[0]);
+                else
+                    buf_set_pixel(i * PIXEL_SIZE, j * PIXEL_SIZE, 0x000000);
+            }
+
+        }
+
+    }
+
+    buf_write();
 }
 
 void combine_boards(uint32_t size_arg, uint8_t type, uint8_t **Board1, uint8_t **Board2) {
@@ -446,6 +475,33 @@ static void free_temp_board(tboard_t *tboard) {
     free_board(DEFAULT_INIT_SETUP, &(tboard->rule_2_temp_board));
     free_board(DEFAULT_INIT_SETUP, &(tboard->rule_3_temp_board));
 
+}
+
+static void buf_clear(void)
+{
+    memset(buf, 0, sizeof(buf));
+}
+
+static void buf_set(int x, int y, long color)
+{
+    if (x >= 0 && x < PPM_SIZE && y >= 0 && y < PPM_SIZE) {
+        buf[y*3L*PPM_SIZE + x*3L + 0] = color >> 16;
+        buf[y*3L*PPM_SIZE + x*3L + 1] = color >>  8;
+        buf[y*3L*PPM_SIZE + x*3L + 2] = color >>  0;
+    }
+}
+
+static void buf_set_pixel(int x, int y, long color) {
+
+    for(int m = -(PIXEL_SIZE); m < PIXEL_SIZE; m++)
+        for(int n = -(PIXEL_SIZE); n < PIXEL_SIZE; n++)
+            buf_set(x + m, y + n, color);
+
+}
+
+static void buf_write(void) {
+    printf("P6\n%d %d\n255\n", PPM_SIZE, PPM_SIZE);
+    fwrite(buf, sizeof(buf), 1, stdout);
 }
 
 

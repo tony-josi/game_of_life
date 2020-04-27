@@ -17,5 +17,5 @@ make
 ##### Run
 
 ``` sh
-game_of_life_sim.exe
+game_of_life_sim.exe | mpv --no-correct-pts --record-file=out.avi --fps=60 -
 ```

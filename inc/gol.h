@@ -19,13 +19,13 @@
 #define EXIT_FAILURE                    (-1)
 #endif
 
-#define MAX_BOARD_DEFAULT_SIZE          (20)
+#define MAX_BOARD_DEFAULT_SIZE          108
 
 #define DEFAULT_INIT_SETUP              0
 
 #define DEFAULT_SLEEP_TIME              0
 
-#define MAX_NOOF_GENERATIONS            100
+#define MAX_NOOF_GENERATIONS            700
 
 #define INIT_WITH_ONE                   (1u)
 
@@ -34,6 +34,10 @@
 #define DO_LOGICAL_OR_OP                (0u)
 
 #define DO_LOGICAL_AND_OP               (1u)
+
+#define PIXEL_SIZE                      10
+
+#define PPM_SIZE                        (MAX_BOARD_DEFAULT_SIZE * PIXEL_SIZE)
 
 #define UNUSED(X)                       (void)X      /* To avoid gcc/g++ warnings */
 
@@ -93,6 +97,7 @@ void print_cur_generation(uint32_t, uint8_t **);
 void combine_boards(uint32_t, uint8_t, uint8_t **, uint8_t **);
 void free_board(uint32_t, uint8_t ***);
 void clear_board(uint32_t, uint8_t, uint8_t **);
+void write_ppm_cur_generation(uint32_t, uint8_t **);
 
 #endif /* GOL_H */
 
