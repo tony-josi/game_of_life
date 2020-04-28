@@ -25,7 +25,7 @@
 
 #define DEFAULT_SLEEP_TIME              0
 
-#define MAX_NOOF_GENERATIONS            700
+#define MAX_NOOF_GENERATIONS            500
 
 #define INIT_WITH_ONE                   (1u)
 
