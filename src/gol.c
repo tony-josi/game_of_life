@@ -244,7 +244,7 @@ int next_generation(uint32_t size_arg, uint8_t **Board, tboard_t tboard) {
     ret_code |= apply_rule(DEATH_BY_ISOLATION, size, Board, tboard.rule_2_temp_board);
     ret_code |= apply_rule(DEATH_BY_OVERCROWDING, size, Board, tboard.rule_3_temp_board);
 
-    // combine ***
+    /* combine */
     combine_boards(DEFAULT_INIT_SETUP, DO_LOGICAL_OR_OP, Board, tboard.rule_1_temp_board);
     combine_boards(DEFAULT_INIT_SETUP, DO_LOGICAL_AND_OP, Board, tboard.rule_2_temp_board);
     combine_boards(DEFAULT_INIT_SETUP, DO_LOGICAL_AND_OP, Board, tboard.rule_3_temp_board);
