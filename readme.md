@@ -10,6 +10,10 @@ The game is a zero-player game, meaning that its evolution is determined by its 
 
 ![Output sample - Gosper Glider Gun](https://github.com/TonyJosi97/game_of_life/blob/master/gif_samples/GosperGliderGun.gif)
 
+#### Random Live Cell Distribution
+
+![Output sample - Random Live Cell Distribution](https://github.com/TonyJosi97/game_of_life/blob/master/gif_samples/Random.gif)
+
 ### Installation
 
 ##### Build
