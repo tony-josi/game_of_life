@@ -9,6 +9,18 @@ static long colors[] = {0xFF0000, 0x00FF00, 0x0000FF};
 
 static unsigned char buf[3L*PPM_SIZE*PPM_SIZE];
 
+static int init_board(uint32_t, uint8_t ***);
+static int fill_board_init_setup(uint32_t, uint8_t **);
+static int next_generation(uint32_t, uint8_t **, tboard_t);
+static int apply_rule(rule_t, uint32_t, uint8_t **, uint8_t **);
+static int check_rule_new_births(uint32_t, uint8_t **, uint8_t **);
+static int check_rule_death_by_isolation(uint32_t, uint8_t **, uint8_t **);
+static int check_rule_death_by_overcrowding(uint32_t, uint8_t **, uint8_t **);
+static void print_cur_generation(uint32_t, uint8_t **);
+static void combine_boards(uint32_t, uint8_t, uint8_t **, uint8_t **);
+static void free_board(uint32_t, uint8_t ***);
+static void clear_board(uint32_t, uint8_t, uint8_t **);
+static void write_ppm_cur_generation(uint32_t, uint8_t **);
 static void align_string(uint32_t, char *);
 static int init_temp_board(tboard_t *);
 static void free_temp_board(tboard_t *);
@@ -23,6 +35,8 @@ int game_runner_main() {
     uint8_t **board;
     int generation_cntr = 0;
     tboard_t temp_boards;
+
+    UNUSED(print_cur_generation);
 
     if((ret_code = init_temp_board(&temp_boards))) {
         printf("ERR: INIT ERR\n");

@@ -86,18 +86,6 @@ static inline int nearby_life_counter(int i, int j, int size, uint8_t **Buffer) 
 }
 
 int game_runner_main();
-int init_board(uint32_t, uint8_t ***);
-int fill_board_init_setup(uint32_t, uint8_t **);
-int next_generation(uint32_t, uint8_t **, tboard_t);
-int apply_rule(rule_t, uint32_t, uint8_t **, uint8_t **);
-int check_rule_new_births(uint32_t, uint8_t **, uint8_t **);
-int check_rule_death_by_isolation(uint32_t, uint8_t **, uint8_t **);
-int check_rule_death_by_overcrowding(uint32_t, uint8_t **, uint8_t **);
-void print_cur_generation(uint32_t, uint8_t **);
-void combine_boards(uint32_t, uint8_t, uint8_t **, uint8_t **);
-void free_board(uint32_t, uint8_t ***);
-void clear_board(uint32_t, uint8_t, uint8_t **);
-void write_ppm_cur_generation(uint32_t, uint8_t **);
 
 #endif /* GOL_H */
 
