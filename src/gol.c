@@ -12,6 +12,7 @@ static unsigned char buf[3L*PPM_SIZE*PPM_SIZE];
 static int init_board(uint32_t, uint8_t ***);
 static int fill_board_init_setup(uint32_t, uint8_t **);
 static int next_generation(uint32_t, uint8_t **, tboard_t);
+static int nearby_life_counter(int , int , int , uint8_t **);
 static int apply_rule(rule_t, uint32_t, uint8_t **, uint8_t **);
 static int check_rule_new_births(uint32_t, uint8_t **, uint8_t **);
 static int check_rule_death_by_isolation(uint32_t, uint8_t **, uint8_t **);
@@ -48,6 +49,7 @@ int game_runner_main() {
         if(!(ret_code = fill_board_init_setup(DEFAULT_INIT_SETUP, board))) {
 
             write_ppm_cur_generation(DEFAULT_INIT_SETUP, board);
+            //print_cur_generation(DEFAULT_INIT_SETUP, board);
 
             while(!(ret_code = next_generation(DEFAULT_INIT_SETUP, board, temp_boards)) 
             && generation_cntr < MAX_NOOF_GENERATIONS) {
@@ -61,6 +63,8 @@ int game_runner_main() {
                 #endif
 
                 write_ppm_cur_generation(DEFAULT_INIT_SETUP, board);
+                //print_cur_generation(DEFAULT_INIT_SETUP, board);
+
                 ++generation_cntr;
             
             }
@@ -282,7 +286,7 @@ int apply_rule(rule_t rule, uint32_t size_arg, uint8_t **Board, uint8_t **Result
 
 }
 
-int check_rule_new_births(uint32_t size, uint8_t **Board, uint8_t **Result) {
+__attribute__((flatten)) int check_rule_new_births(uint32_t size, uint8_t **Board, uint8_t **Result) {
 
     for (uint32_t i = 0; i < size; i++) 
         for (uint32_t j = 0; j < size; j++) {
@@ -296,7 +300,7 @@ int check_rule_new_births(uint32_t size, uint8_t **Board, uint8_t **Result) {
 
 }
 
-int check_rule_death_by_isolation(uint32_t size, uint8_t **Board, uint8_t **Result) {
+__attribute__((flatten)) int check_rule_death_by_isolation(uint32_t size, uint8_t **Board, uint8_t **Result) {
 
     //clear_board(DEFAULT_INIT_SETUP, 1, Result);
 
@@ -312,7 +316,7 @@ int check_rule_death_by_isolation(uint32_t size, uint8_t **Board, uint8_t **Resu
 
 }
 
-int check_rule_death_by_overcrowding(uint32_t size, uint8_t **Board, uint8_t **Result) {
+__attribute__((flatten)) int check_rule_death_by_overcrowding(uint32_t size, uint8_t **Board, uint8_t **Result) {
 
     //clear_board(DEFAULT_INIT_SETUP, 1, Result);
 
@@ -448,6 +452,34 @@ void free_board(uint32_t size_arg, uint8_t ***Board) {
     free(*Board);
     *Board = NULL;
 
+}
+
+static int nearby_life_counter(int i, int j, int size, uint8_t **Buffer) {
+    
+    int cntr = 0;
+
+    if((i - 1) >= 0) {
+        if(Buffer[i - 1][j] == 1)   cntr++;
+        if((j - 1) >= 0) 
+            if(Buffer[i - 1][j - 1] == 1) cntr++;
+        if((j + 1) < size) 
+            if(Buffer[i - 1][j + 1] == 1) cntr++;
+    }
+
+    if((i + 1) < size) {
+        if(Buffer[i + 1][j] == 1)   cntr++;
+        if((j - 1) >= 0) 
+            if(Buffer[i + 1][j - 1] == 1) cntr++;
+        if((j + 1) < size) 
+            if(Buffer[i + 1][j + 1] == 1) cntr++;
+    }
+
+    if((j - 1) >= 0)
+        if(Buffer[i][j - 1] == 1) cntr++;
+    if((j + 1) < size)
+        if(Buffer[i][j + 1] == 1) cntr++;
+
+    return cntr;
 }
 
 static void align_string(uint32_t size, char *str) {

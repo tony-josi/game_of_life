@@ -57,34 +57,6 @@ typedef enum {
     DEATH_BY_OVERCROWDING
 } rule_t;
 
-static inline int nearby_life_counter(int i, int j, int size, uint8_t **Buffer) {
-    
-    int cntr = 0;
-
-    if((i - 1) >= 0) {
-        if(Buffer[i - 1][j] == 1)   cntr++;
-        if((j - 1) >= 0) 
-            if(Buffer[i - 1][j - 1] == 1) cntr++;
-        if((j + 1) < size) 
-            if(Buffer[i - 1][j + 1] == 1) cntr++;
-    }
-
-    if((i + 1) < size) {
-        if(Buffer[i + 1][j] == 1)   cntr++;
-        if((j - 1) >= 0) 
-            if(Buffer[i + 1][j - 1] == 1) cntr++;
-        if((j + 1) < size) 
-            if(Buffer[i + 1][j + 1] == 1) cntr++;
-    }
-
-    if((j - 1) >= 0)
-        if(Buffer[i][j - 1] == 1) cntr++;
-    if((j + 1) < size)
-        if(Buffer[i][j + 1] == 1) cntr++;
-
-    return cntr;
-}
-
 int game_runner_main();
 
 #endif /* GOL_H */
