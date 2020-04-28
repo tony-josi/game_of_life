@@ -150,7 +150,7 @@ int fill_board_init_setup(uint32_t choice, uint8_t **Board) {
        /* default init for Gosper Glider Gun */
        /* NOTE: Increase the MAX_BOARD_DEFAULT_SIZE in gol.h to 80 or above 
        also increase MAX_NOOF_GENERATIONS to 200 or above */
-       
+       /*
        // left square 
        Board[10][10] = 1;
        Board[10][11] = 1;
@@ -193,15 +193,15 @@ int fill_board_init_setup(uint32_t choice, uint8_t **Board) {
        Board[16][45] = 1;
        Board[16][47] = 1;
        Board[17][45] = 1;
-       
+       */
 
        /* default init for random live cells */
-       /*
+       
         srand(time(0)); 
         for (uint32_t i = 0; i < MAX_BOARD_DEFAULT_SIZE; i++) 
             for (uint32_t j = 0; j < MAX_BOARD_DEFAULT_SIZE; j++) 
                 Board[i][j] = RAND_GEN(2);
-        */
+        
         
     }
     return 0;
