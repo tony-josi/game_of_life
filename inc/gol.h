@@ -21,6 +21,8 @@
 
 #define MAX_BOARD_DEFAULT_SIZE          108
 
+#define OUTPUT_IN_PPM                   1
+
 #define DEFAULT_INIT_SETUP              0
 
 #define DEFAULT_SLEEP_TIME              0

@@ -5,30 +5,36 @@
     static int sleep_in_ms(long);
 #endif
 
+#if OUTPUT_IN_PPM
 static long colors[] = {0xFF0000, 0x00FF00, 0x0000FF};
+static unsigned char buf[3L * PPM_SIZE * PPM_SIZE];
+#endif /* OUTPUT_IN_PPM */
 
-static unsigned char buf[3L*PPM_SIZE*PPM_SIZE];
 
 static int init_board(uint32_t, uint8_t ***);
 static int fill_board_init_setup(uint32_t, uint8_t **);
 static int next_generation(uint32_t, uint8_t **, tboard_t);
-static int nearby_life_counter(int , int , int , uint8_t **);
 static int apply_rule(rule_t, uint32_t, uint8_t **, uint8_t **);
-__attribute__((flatten)) static int check_rule_new_births(uint32_t, uint8_t **, uint8_t **);
-__attribute__((flatten)) static int check_rule_death_by_isolation(uint32_t, uint8_t **, uint8_t **);
-__attribute__((flatten)) static int check_rule_death_by_overcrowding(uint32_t, uint8_t **, uint8_t **);
+static int nearby_life_counter(int , int , int , uint8_t **);
+static int check_rule_new_births(uint32_t, uint8_t **, uint8_t **) __attribute__((flatten));
+static int check_rule_death_by_isolation(uint32_t, uint8_t **, uint8_t **) __attribute__((flatten));
+static int check_rule_death_by_overcrowding(uint32_t, uint8_t **, uint8_t **) __attribute__((flatten));
 static void print_cur_generation(uint32_t, uint8_t **);
 static void combine_boards(uint32_t, uint8_t, uint8_t **, uint8_t **);
 static void free_board(uint32_t, uint8_t ***);
 static void clear_board(uint32_t, uint8_t, uint8_t **);
-static void write_ppm_cur_generation(uint32_t, uint8_t **);
 static void align_string(uint32_t, char *);
 static int init_temp_board(tboard_t *);
 static void free_temp_board(tboard_t *);
+
+#if OUTPUT_IN_PPM
 static void buf_clear(void);
 static void buf_set(int , int , long);
 static void buf_set_pixel(int , int , long);
 static void buf_write(void);
+static void write_ppm_cur_generation(uint32_t, uint8_t **);
+#endif /* OUTPUT_IN_PPM */
+
 
 int game_runner_main() {
 
@@ -48,8 +54,11 @@ int game_runner_main() {
 
         if(!(ret_code = fill_board_init_setup(DEFAULT_INIT_SETUP, board))) {
 
-            write_ppm_cur_generation(DEFAULT_INIT_SETUP, board);
-            //print_cur_generation(DEFAULT_INIT_SETUP, board);
+            #if OUTPUT_IN_PPM
+                write_ppm_cur_generation(DEFAULT_INIT_SETUP, board);
+            #else
+                print_cur_generation(DEFAULT_INIT_SETUP, board);
+            #endif /* OUTPUT_IN_PPM */
 
             while(!(ret_code = next_generation(DEFAULT_INIT_SETUP, board, temp_boards)) 
             && generation_cntr < MAX_NOOF_GENERATIONS) {
@@ -62,9 +71,12 @@ int game_runner_main() {
                     sleep_in_ms(DEFAULT_SLEEP_TIME);
                 #endif
 
-                write_ppm_cur_generation(DEFAULT_INIT_SETUP, board);
-                //print_cur_generation(DEFAULT_INIT_SETUP, board);
-
+                #if OUTPUT_IN_PPM
+                    write_ppm_cur_generation(DEFAULT_INIT_SETUP, board);
+                #else
+                    print_cur_generation(DEFAULT_INIT_SETUP, board);
+                #endif /* OUTPUT_IN_PPM */
+                
                 ++generation_cntr;
             
             }
@@ -244,7 +256,7 @@ int next_generation(uint32_t size_arg, uint8_t **Board, tboard_t tboard) {
     ret_code |= apply_rule(DEATH_BY_ISOLATION, size, Board, tboard.rule_2_temp_board);
     ret_code |= apply_rule(DEATH_BY_OVERCROWDING, size, Board, tboard.rule_3_temp_board);
 
-    /* combine */
+    // combine ***
     combine_boards(DEFAULT_INIT_SETUP, DO_LOGICAL_OR_OP, Board, tboard.rule_1_temp_board);
     combine_boards(DEFAULT_INIT_SETUP, DO_LOGICAL_AND_OP, Board, tboard.rule_2_temp_board);
     combine_boards(DEFAULT_INIT_SETUP, DO_LOGICAL_AND_OP, Board, tboard.rule_3_temp_board);
@@ -286,7 +298,35 @@ int apply_rule(rule_t rule, uint32_t size_arg, uint8_t **Board, uint8_t **Result
 
 }
 
-__attribute__((flatten)) int check_rule_new_births(uint32_t size, uint8_t **Board, uint8_t **Result) {
+static int nearby_life_counter(int i, int j, int size, uint8_t **Buffer) {
+    
+    int cntr = 0;
+
+    if((i - 1) >= 0) {
+        if(Buffer[i - 1][j] == 1)   cntr++;
+        if((j - 1) >= 0) 
+            if(Buffer[i - 1][j - 1] == 1) cntr++;
+        if((j + 1) < size) 
+            if(Buffer[i - 1][j + 1] == 1) cntr++;
+    }
+
+    if((i + 1) < size) {
+        if(Buffer[i + 1][j] == 1)   cntr++;
+        if((j - 1) >= 0) 
+            if(Buffer[i + 1][j - 1] == 1) cntr++;
+        if((j + 1) < size) 
+            if(Buffer[i + 1][j + 1] == 1) cntr++;
+    }
+
+    if((j - 1) >= 0)
+        if(Buffer[i][j - 1] == 1) cntr++;
+    if((j + 1) < size)
+        if(Buffer[i][j + 1] == 1) cntr++;
+
+    return cntr;
+}
+
+int check_rule_new_births(uint32_t size, uint8_t **Board, uint8_t **Result) {
 
     for (uint32_t i = 0; i < size; i++) 
         for (uint32_t j = 0; j < size; j++) {
@@ -300,7 +340,7 @@ __attribute__((flatten)) int check_rule_new_births(uint32_t size, uint8_t **Boar
 
 }
 
-__attribute__((flatten)) int check_rule_death_by_isolation(uint32_t size, uint8_t **Board, uint8_t **Result) {
+int check_rule_death_by_isolation(uint32_t size, uint8_t **Board, uint8_t **Result) {
 
     //clear_board(DEFAULT_INIT_SETUP, 1, Result);
 
@@ -316,7 +356,7 @@ __attribute__((flatten)) int check_rule_death_by_isolation(uint32_t size, uint8_
 
 }
 
-__attribute__((flatten)) int check_rule_death_by_overcrowding(uint32_t size, uint8_t **Board, uint8_t **Result) {
+int check_rule_death_by_overcrowding(uint32_t size, uint8_t **Board, uint8_t **Result) {
 
     //clear_board(DEFAULT_INIT_SETUP, 1, Result);
 
@@ -372,28 +412,6 @@ void print_cur_generation(uint32_t size, uint8_t **Board) {
         //printf("   |-------------------------------------------------------------------------------|\n\n\n");
         printf("\n\n\n");
     }
-}
-
-
-void write_ppm_cur_generation(uint32_t size, uint8_t **Board) {
-
-    buf_clear();
-    
-    if(size == DEFAULT_INIT_SETUP) {
-        
-        for(int i = 0; i < MAX_BOARD_DEFAULT_SIZE; i++) {
-            for(int j = 0; j < MAX_BOARD_DEFAULT_SIZE; j++) {
-                if(Board[i][j] == 1)
-                    buf_set_pixel(j * PIXEL_SIZE, i * PIXEL_SIZE, colors[0]);
-                else
-                    buf_set_pixel(j * PIXEL_SIZE, i * PIXEL_SIZE, 0x000000);
-            }
-
-        }
-
-    }
-
-    buf_write();
 }
 
 void combine_boards(uint32_t size_arg, uint8_t type, uint8_t **Board1, uint8_t **Board2) {
@@ -454,34 +472,6 @@ void free_board(uint32_t size_arg, uint8_t ***Board) {
 
 }
 
-static int nearby_life_counter(int i, int j, int size, uint8_t **Buffer) {
-    
-    int cntr = 0;
-
-    if((i - 1) >= 0) {
-        if(Buffer[i - 1][j] == 1)   cntr++;
-        if((j - 1) >= 0) 
-            if(Buffer[i - 1][j - 1] == 1) cntr++;
-        if((j + 1) < size) 
-            if(Buffer[i - 1][j + 1] == 1) cntr++;
-    }
-
-    if((i + 1) < size) {
-        if(Buffer[i + 1][j] == 1)   cntr++;
-        if((j - 1) >= 0) 
-            if(Buffer[i + 1][j - 1] == 1) cntr++;
-        if((j + 1) < size) 
-            if(Buffer[i + 1][j + 1] == 1) cntr++;
-    }
-
-    if((j - 1) >= 0)
-        if(Buffer[i][j - 1] == 1) cntr++;
-    if((j + 1) < size)
-        if(Buffer[i][j + 1] == 1) cntr++;
-
-    return cntr;
-}
-
 static void align_string(uint32_t size, char *str) {
 
     uint32_t i = 0;
@@ -523,6 +513,28 @@ static void free_temp_board(tboard_t *tboard) {
 
 }
 
+#if OUTPUT_IN_PPM
+void write_ppm_cur_generation(uint32_t size, uint8_t **Board) {
+
+    buf_clear();
+    
+    if(size == DEFAULT_INIT_SETUP) {
+        
+        for(int i = 0; i < MAX_BOARD_DEFAULT_SIZE; i++) {
+            for(int j = 0; j < MAX_BOARD_DEFAULT_SIZE; j++) {
+                if(Board[i][j] == 1)
+                    buf_set_pixel(j * PIXEL_SIZE, i * PIXEL_SIZE, colors[0]);
+                else
+                    buf_set_pixel(j * PIXEL_SIZE, i * PIXEL_SIZE, 0x000000);
+            }
+
+        }
+
+    }
+
+    buf_write();
+}
+
 static void buf_clear(void)
 {
     memset(buf, 0, sizeof(buf));
@@ -549,6 +561,7 @@ static void buf_write(void) {
     printf("P6\n%d %d\n255\n", PPM_SIZE, PPM_SIZE);
     fwrite(buf, sizeof(buf), 1, stdout);
 }
+#endif /* OUTPUT_IN_PPM */
 
 
 #ifndef _WIN32
