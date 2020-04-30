@@ -1,4 +1,4 @@
-#include "inc/gol.h"
+#include "inc/gol_core.h"
 
 int main() {
 

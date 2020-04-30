@@ -1,5 +1,5 @@
-#ifndef GOL_H
-#define GOL_H
+#ifndef GOL_CORE_H
+#define GOL_CORE_H
 
 #include <stdio.h>
 #include <stdint.h>
@@ -7,27 +7,13 @@
 #include <string.h>
 #include <time.h>
 
+#include "gol_rules.h"
+#include "gol_op_in_text.h"
+#include "gol_op_in_ppm.h"
+
 #ifdef _WIN32
     #include <Windows.h>
 #endif
-
-#ifndef EXIT_SUCCESS
-#define EXIT_SUCCESS                    0
-#endif
-
-#ifndef EXIT_FAILURE
-#define EXIT_FAILURE                    (-1)
-#endif
-
-#define MAX_BOARD_DEFAULT_SIZE          108
-
-#define OUTPUT_IN_PPM                   1
-
-#define DEFAULT_INIT_SETUP              0
-
-#define DEFAULT_SLEEP_TIME              0
-
-#define MAX_NOOF_GENERATIONS            200
 
 #define INIT_WITH_ONE                   (1u)
 
@@ -37,9 +23,13 @@
 
 #define DO_LOGICAL_AND_OP               (1u)
 
-#define PIXEL_SIZE                      10
+#ifndef EXIT_SUCCESS
+#define EXIT_SUCCESS                    0
+#endif
 
-#define PPM_SIZE                        (MAX_BOARD_DEFAULT_SIZE * PIXEL_SIZE)
+#ifndef EXIT_FAILURE
+#define EXIT_FAILURE                    (-1)
+#endif
 
 #define UNUSED(X)                       (void)X      /* To avoid gcc/g++ warnings */
 
@@ -61,5 +51,5 @@ typedef enum {
 
 int game_runner_main();
 
-#endif /* GOL_H */
+#endif /* GOL_CORE_H */
 
