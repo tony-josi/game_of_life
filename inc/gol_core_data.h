@@ -4,13 +4,13 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define MAX_BOARD_DEFAULT_SIZE          108
+#define MAX_BOARD_DEFAULT_SIZE          107
 
 #define OUTPUT_IN_PPM                   1
 
-#define MAX_NOOF_GENERATIONS            200
+#define MAX_NOOF_GENERATIONS            800
 
-#define PIXEL_SIZE                      10
+#define PIXEL_SIZE                      11
 
 #define PPM_SIZE                        (MAX_BOARD_DEFAULT_SIZE * PIXEL_SIZE)
 

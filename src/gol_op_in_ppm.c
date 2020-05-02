@@ -1,4 +1,5 @@
 #include "../inc/gol_op_in_ppm.h"
+#include "../inc/gol_core.h"
 
 #if OUTPUT_IN_PPM
 
@@ -33,7 +34,7 @@ void buf_clear(void)
 
 void buf_set(int x, int y, long color)
 {
-    if (x >= 0 && x < PPM_SIZE && y >= 0 && y < PPM_SIZE) {
+    if (x >= 0 && x < (PPM_SIZE) && y >= 0 && y < (PPM_SIZE)) {
         buf[y*3L*PPM_SIZE + x*3L + 0] = color >> 16;
         buf[y*3L*PPM_SIZE + x*3L + 1] = color >>  8;
         buf[y*3L*PPM_SIZE + x*3L + 2] = color >>  0;

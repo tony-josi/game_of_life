@@ -30,8 +30,8 @@ int nearby_life_counter(int i, int j, int size, uint8_t **Buffer) {
 
 int check_rule_new_births(uint32_t size, uint8_t **Board, uint8_t **Result) {
 
-    for (uint32_t i = 0; i < size; i++) 
-        for (uint32_t j = 0; j < size; j++) {
+    for (uint32_t i = PIXEL_SIZE; i < (size - PIXEL_SIZE); i++) 
+        for (uint32_t j = PIXEL_SIZE; j < (size - PIXEL_SIZE); j++) {
             if(Board[i][j] == 0) {
                 if(nearby_life_counter(i, j, size, Board) == 3)
                     Result[i][j] = 1;
@@ -46,8 +46,8 @@ int check_rule_death_by_isolation(uint32_t size, uint8_t **Board, uint8_t **Resu
 
     //clear_board(DEFAULT_INIT_SETUP, 1, Result);
 
-    for (uint32_t i = 0; i < size; i++) 
-        for (uint32_t j = 0; j < size; j++) {
+    for (uint32_t i = PIXEL_SIZE; i < (size - PIXEL_SIZE); i++) 
+        for (uint32_t j = PIXEL_SIZE; j < (size - PIXEL_SIZE); j++) {
             if(Board[i][j] == 1) {
                 if(nearby_life_counter(i, j, size, Board) <= 1)
                     Result[i][j] = 0;
@@ -62,8 +62,8 @@ int check_rule_death_by_overcrowding(uint32_t size, uint8_t **Board, uint8_t **R
 
     //clear_board(DEFAULT_INIT_SETUP, 1, Result);
 
-    for (uint32_t i = 0; i < size; i++) 
-        for (uint32_t j = 0; j < size; j++) {
+    for (uint32_t i = PIXEL_SIZE; i < (size - PIXEL_SIZE); i++) 
+        for (uint32_t j = PIXEL_SIZE; j < (size - PIXEL_SIZE); j++) {
             if(Board[i][j] == 1) {
                 if(nearby_life_counter(i, j, size, Board) >= 4)
                     Result[i][j] = 0;

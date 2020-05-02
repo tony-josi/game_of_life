@@ -90,58 +90,58 @@ int fill_board_init_setup(uint32_t choice, uint8_t **Board) {
         /* default init for Gosper Glider Gun */
         /* NOTE: Increase the MAX_BOARD_DEFAULT_SIZE in gol.h to 80 or above 
         also increase MAX_NOOF_GENERATIONS to 200 or above */
-        /*
+        
         // left square 
-        Board[10][10] = 1;
-        Board[10][11] = 1;
-        Board[11][10] = 1;
-        Board[11][11] = 1;
+        Board[10 + PIXEL_SIZE][10 + PIXEL_SIZE] = 1;
+        Board[10 + PIXEL_SIZE][11 + PIXEL_SIZE] = 1;
+        Board[11 + PIXEL_SIZE][10 + PIXEL_SIZE] = 1;
+        Board[11 + PIXEL_SIZE][11 + PIXEL_SIZE] = 1;
         // left diamond 
-        Board[10][19] = 1;
-        Board[10][20] = 1;
-        Board[11][18] = 1;
-        Board[11][20] = 1;
-        Board[12][18] = 1;
-        Board[12][19] = 1;
+        Board[10 + PIXEL_SIZE][19 + PIXEL_SIZE] = 1;
+        Board[10 + PIXEL_SIZE][20 + PIXEL_SIZE] = 1;
+        Board[11 + PIXEL_SIZE][18 + PIXEL_SIZE] = 1;
+        Board[11 + PIXEL_SIZE][20 + PIXEL_SIZE] = 1;
+        Board[12 + PIXEL_SIZE][18 + PIXEL_SIZE] = 1;
+        Board[12 + PIXEL_SIZE][19 + PIXEL_SIZE] = 1;
         // glidr b/w diamonds 
-        Board[12][26] = 1;
-        Board[12][27] = 1;
-        Board[13][26] = 1;
-        Board[13][28] = 1;
-        Board[14][26] = 1;
+        Board[12 + PIXEL_SIZE][26 + PIXEL_SIZE] = 1;
+        Board[12 + PIXEL_SIZE][27 + PIXEL_SIZE] = 1;
+        Board[13 + PIXEL_SIZE][26 + PIXEL_SIZE] = 1;
+        Board[13 + PIXEL_SIZE][28 + PIXEL_SIZE] = 1;
+        Board[14 + PIXEL_SIZE][26 + PIXEL_SIZE] = 1;
         // right diamond 
-        Board[8][33] = 1;
-        Board[8][34] = 1;
-        Board[9][32] = 1;
-        Board[9][34] = 1;
-        Board[10][32] = 1;
-        Board[10][33] = 1;
+        Board[8 + PIXEL_SIZE][33 + PIXEL_SIZE] = 1;
+        Board[8 + PIXEL_SIZE][34 + PIXEL_SIZE] = 1;
+        Board[9 + PIXEL_SIZE][32 + PIXEL_SIZE] = 1;
+        Board[9 + PIXEL_SIZE][34 + PIXEL_SIZE] = 1;
+        Board[10 + PIXEL_SIZE][32 + PIXEL_SIZE] = 1;
+        Board[10 + PIXEL_SIZE][33 + PIXEL_SIZE] = 1;
         // bottum glidr 
-        Board[20][34] = 1;
-        Board[20][35] = 1;
-        Board[20][36] = 1;
-        Board[21][34] = 1;
-        Board[22][35] = 1;
+        Board[20 + PIXEL_SIZE][34 + PIXEL_SIZE] = 1;
+        Board[20 + PIXEL_SIZE][35 + PIXEL_SIZE] = 1;
+        Board[20 + PIXEL_SIZE][36 + PIXEL_SIZE] = 1;
+        Board[21 + PIXEL_SIZE][34 + PIXEL_SIZE] = 1;
+        Board[22 + PIXEL_SIZE][35 + PIXEL_SIZE] = 1;
         // right square 
-        Board[8][44] = 1;
-        Board[8][45] = 1;
-        Board[9][44] = 1;
-        Board[9][45] = 1;
+        Board[8 + PIXEL_SIZE][44 + PIXEL_SIZE] = 1;
+        Board[8 + PIXEL_SIZE][45 + PIXEL_SIZE] = 1;
+        Board[9 + PIXEL_SIZE][44 + PIXEL_SIZE] = 1;
+        Board[9 + PIXEL_SIZE][45 + PIXEL_SIZE] = 1;
         // glidr below right square 
-        Board[15][45] = 1;
-        Board[15][46] = 1;
-        Board[16][45] = 1;
-        Board[16][47] = 1;
-        Board[17][45] = 1;
-        */
+        Board[15 + PIXEL_SIZE][45 + PIXEL_SIZE] = 1;
+        Board[15 + PIXEL_SIZE][46 + PIXEL_SIZE] = 1;
+        Board[16 + PIXEL_SIZE][45 + PIXEL_SIZE] = 1;
+        Board[16 + PIXEL_SIZE][47 + PIXEL_SIZE] = 1;
+        Board[17 + PIXEL_SIZE][45 + PIXEL_SIZE] = 1;
+        
 
         /* default init for random live cells */
-        
+        /*
         srand(time(0)); 
-        for (uint32_t i = 0; i < MAX_BOARD_DEFAULT_SIZE; i++) 
-            for (uint32_t j = 0; j < MAX_BOARD_DEFAULT_SIZE; j++) 
+        for (uint32_t i = PIXEL_SIZE; i < (MAX_BOARD_DEFAULT_SIZE - PIXEL_SIZE); i++) 
+            for (uint32_t j = PIXEL_SIZE; j < (MAX_BOARD_DEFAULT_SIZE - PIXEL_SIZE); j++) 
                 Board[i][j] = RAND_GEN(2);
-        
+        */
     }
     return 0;
 
